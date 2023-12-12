@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\ElectreController;
+use App\Http\Controllers\MooraController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,5 +22,5 @@ Route::get('/input', function () {
     return view('input');
 })->name('input');
 
-Route::post('/table', [ElectreController::class, 'table'])->name('table');
-Route::post('/hasil', [ElectreController::class, 'hitung'])->name('hasil');
+Route::post('/table', [MooraController::class, 'table'])->name('table');
+Route::post('/hasil', [MooraController::class, 'hitung'])->name('hasil');
