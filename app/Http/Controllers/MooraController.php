@@ -81,18 +81,33 @@ class MooraController extends Controller
                     $max[$i] += $optimasi[$i][$j];
                 }
             }
+            $minMax[$i] = [
+                'max' => $max[$i],
+                'min' => $min[$i],
+                'minMax' => $max[$i] - $min[$i],
+            ];
         }
-        for ($k = 0; $k < count($optimasi); $k++) {
-            $minMax[$k] = $max[$k] - $min[$k];
+        
+        $ranking = $this->ranking($minMax);
+
+        foreach ($minMax as $key => &$data) {
+            $data['ranking'] = $ranking[$key];
         }
 
         return $minMax;
     }
 
-    public function ranking($minMax){
-        $sortedMinMax = $minMax;
-        arsort($sortedMinMax);
+    public function ranking($minMax)
+    {
+        $values = array_column($minMax, 'minMax');
 
-        return $sortedMinMax;
+        $sortedValues = $values;
+        rsort($sortedValues);
+
+        $ranking = array_map(function ($value) use ($sortedValues) {
+            return array_search($value, $sortedValues) + 1;
+        }, $values);
+
+        return $ranking;
     }
 }
