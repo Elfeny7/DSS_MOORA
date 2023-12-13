@@ -16,9 +16,11 @@ class MooraController extends Controller
 
     public function hitung(Request $request)
     {
-        // dd($request->all());
         $bobot = $request->input('bobot');
         $value = $request->input('value');
+        $labelCriteria = $request->input('label_criteria');
+        $labelAlternative = $request->input('label_alternative');
+
         $y = $request->input('y');
         $kriteria = $request->input('kriteria');
         for ($i = 0; $i < $y; $i++) {
@@ -38,6 +40,8 @@ class MooraController extends Controller
             'optimasi' => $optimasi,
             'minMax' => $minMax,
             'sortedMinMax' => $sortedMinMax,
+            'labelCriteria' => $labelCriteria,
+            'labelAlternative' => $labelAlternative,
         ]);
     }
 
