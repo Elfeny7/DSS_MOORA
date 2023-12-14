@@ -1,7 +1,7 @@
 @extends('layouts.main')
 @section('title', 'Tabel')
 @section('content')
-    <div class="container">
+    <div class="container p-5 mt-5 border border-dark rounded-5">
         <h2>Form Tabel dengan {{ $x }} Alternatif dan {{ $y }} Kriteria</h2>
         <form method="post" action="{{ route('result') }}">
             @csrf
@@ -12,7 +12,7 @@
                         <th></th>
                         @for ($i = 0; $i < $y; $i++)
                             <th>
-                                <div class="input-group mb-3">
+                                <div class="input-group">
                                     <div class="input-group-text d-flex align-items-center">
                                         <span class="me-2">Cost</span>
                                         <input class="form-check-input mt-0" name="criteria[{{ $i }}]" type="checkbox"
@@ -50,7 +50,7 @@
                     @endfor
                 </tbody>
             </table>
-            <button type="submit" class="btn btn-primary">hitung</button>
+            <button type="submit" class="btn btn-primary">Hitung</button>
         </form>
     </div>
 @endsection

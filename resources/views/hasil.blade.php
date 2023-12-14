@@ -1,7 +1,7 @@
 @extends('layouts.main')
 @section('title', 'Hasil Perhitungan')
 @section('content')
-    <div class="container">
+    <div class="container mt-5">
         <h2>Hasil Normalisasi</h2>
         <table class="table table-bordered table-striped">
             <thead>
