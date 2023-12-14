@@ -23,4 +23,4 @@ Route::get('/input', function () {
 })->name('input');
 
 Route::post('/table', [MooraController::class, 'table'])->name('table');
-Route::post('/hasil', [MooraController::class, 'hitung'])->name('hasil');
+Route::post('/result', [MooraController::class, 'calculate'])->name('result');

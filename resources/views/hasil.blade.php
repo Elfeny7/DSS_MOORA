@@ -37,7 +37,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($optimasi as $i => $row)
+                @foreach ($optimization as $i => $row)
                     <tr>
                         <td>{{ $labelAlternative[$i] ?? '' }}</td>
                         @foreach ($row as $j => $value)

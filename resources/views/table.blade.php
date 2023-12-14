@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <h2>Form Tabel dengan {{ $x }} Alternatif dan {{ $y }} Kriteria</h2>
-        <form method="post" action="{{ route('hasil') }}">
+        <form method="post" action="{{ route('result') }}">
             @csrf
             <input type="hidden" name="y" value="{{ $y }}">
             <table class="table">
@@ -15,7 +15,7 @@
                                 <div class="input-group mb-3">
                                     <div class="input-group-text d-flex align-items-center">
                                         <span class="me-2">Cost</span>
-                                        <input class="form-check-input mt-0" type="checkbox"
+                                        <input class="form-check-input mt-0" name="criteria[{{ $i }}]" type="checkbox"
                                             aria-label="Checkbox for following text input">
                                     </div>
                                     <input type="text" class="form-control" name="label_criteria[{{ $i }}]"
@@ -30,7 +30,7 @@
                         <th>Bobot</th>
                         @for ($i = 0; $i < $y; $i++)
                             <td>
-                                <input type="number" name="bobot[]" class="form-control" step="any" required>
+                                <input type="number" name="weight[]" class="form-control" step="any" required>
                             </td>
                         @endfor
                     </tr>
