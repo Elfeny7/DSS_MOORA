@@ -2,6 +2,11 @@
 
 namespace App\Services;
 
+use App\Models\Alternative;
+use App\Models\Criteria;
+use Exception;
+use Illuminate\Support\Facades\DB;
+
 class MooraService
 {
     public function fillCriteriaType($totalCriteria, $criteria)
@@ -83,5 +88,60 @@ class MooraService
         }, $values);
 
         return $ranking;
+    }
+
+    public function addMatrix($labelCriteria = [], $labelAlternative = [], $criteria = [], $weight = [], $value = [])
+    {
+        try {
+            for ($i = 0; $i < count($criteria); $i++) {
+                $criteriaObj[] = [
+                    'id' => $i + 1,
+                    'name' => $labelCriteria[$i],
+                    'weight' => $weight[$i],
+                    'is_cost' => isset($criteria[$i]) && $criteria[$i] == 'on',
+                ];
+            }
+
+            for ($i = 0; $i < count($labelAlternative); $i++) {
+                $alternativeObj[] = [
+                    'id' => $i + 1,
+                    'name' => $labelAlternative[$i],
+                ];
+                for ($j = 0; $j < count($labelCriteria); $j++) {
+                    $valueObj[] = [
+                        'alternative_id' => $i + 1,
+                        'criteria_id' => $j + 1,
+                        'value' => $value[$i][$j],
+                    ];
+                }
+            }
+            DB::beginTransaction();
+
+            Criteria::upsert($criteriaObj, ['id']);
+            Alternative::upsert($alternativeObj, ['id']);
+            DB::table('alternative_criteria')->upsert($valueObj, ['alternative_id', 'criteria_id']);
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+            return $e;
+        }
+    }
+
+    public function getMatrix()
+    {
+        $data = DB::table('alternative_criteria')
+            ->select('*')
+            ->orderBy('alternative_id')
+            ->orderBy('criteria_id')
+            ->get();
+
+        $matrix = [];
+
+        foreach ($data as $d) {
+            $matrix[$d->alternative_id - 1][$d->criteria_id - 1] = $d->value;
+        }
+
+        return $matrix;
     }
 }
