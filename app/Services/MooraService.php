@@ -102,6 +102,8 @@ class MooraService
                 ];
             }
 
+            $valueId = 1;
+
             for ($i = 0; $i < count($labelAlternative); $i++) {
                 $alternativeObj[] = [
                     'id' => $i + 1,
@@ -109,17 +111,24 @@ class MooraService
                 ];
                 for ($j = 0; $j < count($labelCriteria); $j++) {
                     $valueObj[] = [
+                        'id' => $valueId,
                         'alternative_id' => $i + 1,
                         'criteria_id' => $j + 1,
                         'value' => $value[$i][$j],
                     ];
+                    $valueId++;
                 }
             }
             DB::beginTransaction();
 
+            Criteria::whereIn('id', range(count($criteriaObj) + 1, Criteria::count()))->delete();
+            Alternative::whereIn('id', range(count($alternativeObj) + 1, Alternative::count()))->delete();
+            DB::table('alternative_criteria')->whereIn('criteria_id', range(count($criteriaObj) + 1, Criteria::count()))
+                ->orWhereIn('alternative_id', range(count($alternativeObj) + 1, Alternative::count()));
+
             Criteria::upsert($criteriaObj, ['id']);
             Alternative::upsert($alternativeObj, ['id']);
-            DB::table('alternative_criteria')->upsert($valueObj, ['alternative_id', 'criteria_id']);
+            DB::table('alternative_criteria')->upsert($valueObj, ['id', 'alternative_id', 'criteria_id']);
 
             DB::commit();
         } catch (Exception $e) {
