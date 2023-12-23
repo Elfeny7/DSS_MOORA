@@ -18,9 +18,7 @@ Route::get('/', function () {
     return redirect()->route('input');
 });
 
-Route::get('/input', function () {
-    return view('input');
-})->name('input');
-
-Route::post('/table', [MooraController::class, 'table'])->name('table');
+Route::get('/input', [MooraController::class, 'input'])->name('input');
+Route::get('/table', [MooraController::class, 'table'])->name('table');
+Route::post('/save', [MooraController::class, 'save'])->name('save');
 Route::post('/result', [MooraController::class, 'calculate'])->name('result');
